@@ -1,0 +1,72 @@
+{
+	"manifest_version": 2,
+	"name": "彩票插件",
+	"description": "基于vue3.x版本的彩票chrome插件",
+	"version": "1.0.0",
+	"browser_action": {
+		"default_title": "my-vue3-lotter-plugin",
+		"default_icon": "assets/images/icon48.png",
+		"default_popup": "popup.html"
+	},
+	"permissions": [],
+	"background": {
+		"scripts": ["js/chunk-vendors.js","js/background.js"]
+	},
+	"icons": {
+		"16": "assets/images/icon16.png",
+		"48": "assets/images/icon48.png",
+		"128": "assets/images/icon128.png"
+	},
+	"content_scripts": [
+		{
+			"matches": [
+				"https://www.okooo.cn/soccer/match/*/odds/*"
+			],
+			"css": ["css/content.css","css/chunk-vendors.css"],
+			"js": ["js/chunk-vendors.js","js/content.js"],
+			"run_at": "document_idle"
+		},
+		{
+			"matches": [
+				"https://www.okooo.cn/soccer/match/*/hodds/*"
+			],
+			"css": ["css/index.css","css/chunk-vendors.css"],
+			"js": ["js/chunk-vendors.js","js/index.js"],
+			"run_at": "document_idle"
+		},
+		{
+			"matches": [
+				"http://live.win007.com/"
+			],
+			"css": ["css/mile.css","css/chunk-vendors.css"],
+			"js": ["js/chunk-vendors.js","js/mile.js"],
+			"run_at": "document_idle"
+		},
+		{
+			"matches": [
+				"http://live.win007.com/index2in1.aspx?id=24"
+			],
+			"css": ["css/btw.css","css/chunk-vendors.css"],
+			"js": ["js/chunk-vendors.js","js/btw.js"],
+			"run_at": "document_idle"
+		},
+		{
+			"matches": [
+				"https://www.okooo.cn/danchang/*/"
+			],
+			"css": ["css/aoke.css","css/chunk-vendors.css"],
+			"js": ["js/chunk-vendors.js","js/aoke.js"],
+			"run_at": "document_idle"
+		},
+		{
+			"matches": [
+				"https://nsh5.fastball2.com/index.html#/"
+			],
+			"css": ["css/money.css","css/chunk-vendors.css"],
+			"js": ["js/chunk-vendors.js","js/money.js"],
+			"run_at": "document_idle"
+		}
+  ],
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "web_accessible_resources": ["js/inject.js"]
+}
