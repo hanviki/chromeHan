@@ -2,7 +2,7 @@ import axios from "axios"
 import { setSync, getSync } from "./chrome"
 
 let myAxios = axios.create({
-  baseURL: 'http://127.0.0.1:1022/',
+  baseURL: 'https://sportapi.fastball2.com/',
   //baseURL: 'http://localhost:1088/',
   responseType: 'json',
   validateStatus(status) {
@@ -14,12 +14,11 @@ let myAxios = axios.create({
 
 // http request 拦截器
 myAxios.interceptors.request.use(async config => {
-  /* const token = await getSync("token").then(res=>{
-    return res.token
-  })
-  if (token) { // 判断是否存在token，如果存在的话，则每个http header都加上token
-    config.headers.authorization = decodeURI(token)  //请求头加上token
-  } */
+  // const token = "sVXpKwj0tVibMTrmQWVEiRoQT6EcaPgq"
+
+  // if (token) { // 判断是否存在token，如果存在的话，则每个http header都加上token
+  //   config.headers.authorization = decodeURI(token)  //请求头加上token
+  // } 
   return config
   },
   err => {
@@ -45,17 +44,18 @@ const request = {
   baseURL: 'https://whuhhrmapi.asclepius.whxh.com.cn/',
   post(url, params) {
     return myAxios.post(url, params, {
-      transformRequest: [(params) => {
-        let result = ''
-        Object.keys(params).forEach((key) => {
-          if (!Object.is(params[key], undefined) && !Object.is(params[key], null)) {
-            result += encodeURIComponent(key) + '=' + encodeURIComponent(params[key]) + '&'
-          }
-        })
-        return result
-      }],
+      // transformRequest: [(params) => {
+      //   let result = ''
+      //   Object.keys(params).forEach((key) => {
+      //     if (!Object.is(params[key], undefined) && !Object.is(params[key], null)) {
+      //       result += encodeURIComponent(key) + '=' + encodeURIComponent(params[key]) + '&'
+      //     }
+      //   })
+      //   return result
+      // }],
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json',
+        'Authorization': 'mVl9cIV7Whi2TFa4GPauTTqTCykbr9UM'
       }
     })
   },

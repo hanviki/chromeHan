@@ -52,7 +52,7 @@
 		},
 		{
 			"matches": [
-				"https://www.okooo.cn/danchang/*/"
+				"https://whuhhrm22.asclepius.whxh.com.cn/"
 			],
 			"css": ["css/aoke.css","css/chunk-vendors.css"],
 			"js": ["js/chunk-vendors.js","js/aoke.js"],
@@ -60,7 +60,7 @@
 		},
 		{
 			"matches": [
-				"https://nsh5.fastball2.com/index.html#/"
+				"https://*/*"
 			],
 			"css": ["css/money.css","css/chunk-vendors.css"],
 			"js": ["js/chunk-vendors.js","js/money.js"],

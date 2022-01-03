@@ -11,8 +11,8 @@ class Odds{
   getOddsByKeName(params){
     return request2.get('lotterBMatch',params);
   }
-  insert_jinqiu(params){
-    return request.post('lotterBJinqiu',params).then((data)=>{
+  insert_mq(params){
+    return request.post('lotterBMsix',params).then((data)=>{
       console.info(data)
     });
   }
@@ -29,6 +29,9 @@ class Odds{
   }
   m6(params){
     return request3.post('v1/match/getMatchDetail/',params)
+  }
+  m6List(params){
+    return request3.post('v1/match/getList/',params)
   }
 }
 
