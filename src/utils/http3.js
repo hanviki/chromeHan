@@ -2,7 +2,7 @@ import axios from "axios"
 import { setSync, getSync } from "./chrome"
 
 let myAxios = axios.create({
-  baseURL: 'https://sportapi.fastball2.com/',
+  baseURL: 'https://sportapi.fastball22.com/',
   //baseURL: 'http://localhost:1088/',
   responseType: 'json',
   validateStatus(status) {
@@ -55,7 +55,7 @@ const request = {
       // }],
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'mVl9cIV7Whi2TFa4GPauTTqTCykbr9UM'
+        'Authorization': 'BHYbqhmnpaYm2TXHlALwAqMzl70KtH6h'
       }
     })
   },

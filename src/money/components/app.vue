@@ -28,7 +28,9 @@ export default {
       // ,"半场/全场","让球胜平负","让球胜平负-上半场","让球胜平负-下半场","最多进球半场"]
 
       let arrName2 = ["独赢","独赢-上半场","独赢-下半场"]
-      let arrName3 = ["两队均有进球","两队均有进球-上半场","两队均有进球-下半场","最多进球半场","进球-大/小","第1粒进球"]
+      let arrName3 = ["两队均有进球","两队均有进球-上半场","两队均有进球-下半场","最多进球半场","第1粒进球","大/小"]
+      let arrName4 = [zhu_name+" 进球-大/小", zhu_name+" 进球-大/小-上半场", zhu_name+" 进球-大/小-下半场"]
+      let arrName5 = [ke_name+" 进球-大/小", ke_name+" 进球-大/小-上半场", ke_name+" 进球-大/小-下半场"]
       let json=[]
        arrOdds.forEach(element => {
             if(arrName2.indexOf(element.nm)>=0){
@@ -45,6 +47,7 @@ export default {
                 json.push(m6)
                 //this.$api.oddsApi.insert_mq(m6)
             }
+           
             if(arrName3.indexOf(element.nm)>=0){
                 var m6={
                   saishi: matchName,
@@ -52,6 +55,36 @@ export default {
                   keName: ke_name,
                   type: element.nm,
                   zhuRangValue: element.mks[0].op[0].nm,
+                  keRangValue: element.mks[0].op[1].nm,
+                  zhu: element.mks[0].op[0].od,
+                  ke: element.mks[0].op[1].od,
+                  matchTime: matchTime.toString()
+                }
+                json.push(m6)
+               // this.$api.oddsApi.insert_mq(m6)
+            }
+             if(arrName4.indexOf(element.nm)>=0){
+                var m6={
+                  saishi: matchName,
+                  zhuName: zhu_name,
+                  keName: ke_name,
+                  type: element.nm.replace(zhu_name,'').trim(),
+                  zhuRangValue: zhu_name,
+                  keRangValue: element.mks[0].op[1].nm,
+                  zhu: element.mks[0].op[0].od,
+                  ke: element.mks[0].op[1].od,
+                  matchTime: matchTime.toString()
+                }
+                json.push(m6)
+               // this.$api.oddsApi.insert_mq(m6)
+            }
+             if(arrName5.indexOf(element.nm)>=0){
+                var m6={
+                  saishi: matchName,
+                  zhuName: zhu_name,
+                  keName: ke_name,
+                  type: element.nm.replace(ke_name,'').trim(),
+                  zhuRangValue: ke_name,
                   keRangValue: element.mks[0].op[1].nm,
                   zhu: element.mks[0].op[0].od,
                   ke: element.mks[0].op[1].od,
@@ -107,12 +140,23 @@ export default {
     },
     getTodayList() {
        this.requireData(3,1);
-      //  setTimeout(()=>{
-      //    this.requireData(3,2)
-      //  },2000)
-      //   setTimeout(()=>{
-      //    this.requireData(3,3)
-      //  },4000)
+        setTimeout(()=>{
+          this.requireData(3,2);
+        },10000);
+         setTimeout(()=>{
+          this.requireData(3,3)
+        },20000);
+      setInterval(()=>{
+        this.requireData(3,1);
+        setTimeout(()=>{
+          this.requireData(3,2)
+        },10000);
+         setTimeout(()=>{
+          this.requireData(3,3)
+        },20000);
+      },2000*60*60);
+       
+     
     },
     requireData(type,current){
       this.$api.oddsApi.m6List({
