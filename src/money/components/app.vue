@@ -3,6 +3,7 @@
     <div class="content_page_main">
       <a-button type="primary"  @click="getList">早盘</a-button>
        <a-button type="primary" style="margin-left:10px;"  @click="getTodayList">当天</a-button>
+       <a-button type="primary" style="margin-left:10px;"  @click="getBaseBallList">篮球</a-button>
     </div>
   </div>
 </template>
@@ -42,7 +43,8 @@ export default {
                   zhu: element.mks[0].op[0].od,
                   ke: element.mks[0].op[2].od,
                   avg: element.mks[0].op[1].od,
-                  matchTime: matchTime.toString()
+                  matchTime: matchTime.toString(),
+                  bocai: '1'
                 }
                 json.push(m6)
                 //this.$api.oddsApi.insert_mq(m6)
@@ -58,7 +60,8 @@ export default {
                   keRangValue: element.mks[0].op[1].nm,
                   zhu: element.mks[0].op[0].od,
                   ke: element.mks[0].op[1].od,
-                  matchTime: matchTime.toString()
+                  matchTime: matchTime.toString(),
+                  bocai: '1'
                 }
                 json.push(m6)
                // this.$api.oddsApi.insert_mq(m6)
@@ -73,7 +76,8 @@ export default {
                   keRangValue: element.mks[0].op[1].nm,
                   zhu: element.mks[0].op[0].od,
                   ke: element.mks[0].op[1].od,
-                  matchTime: matchTime.toString()
+                  matchTime: matchTime.toString(),
+                  bocai: '1'
                 }
                 json.push(m6)
                // this.$api.oddsApi.insert_mq(m6)
@@ -88,11 +92,49 @@ export default {
                   keRangValue: element.mks[0].op[1].nm,
                   zhu: element.mks[0].op[0].od,
                   ke: element.mks[0].op[1].od,
-                  matchTime: matchTime.toString()
+                  matchTime: matchTime.toString(),
+                  bocai: '1'
                 }
                 json.push(m6)
                // this.$api.oddsApi.insert_mq(m6)
             }
+        });
+        this.$api.oddsApi.insert_mq({listObj:JSON.stringify(json)})
+    },
+    handleBaseBallMatch(data) {
+      let matchName= data.lg.na //赛事名称
+      let zhu_name = data.ts[0].na //主队名称
+      let ke_name = data.ts[1].na //客队名称
+      let arrOdds = data.mg
+      let matchTime= data.bt
+
+      //"进球-大/小","单/双","进球-大/小-上半场","进球-大/小-下半场","进球-大/小","进球-大/小-上半场","进球-大/小-下半场"
+      // const arrName =["让球","让球-上半场","大/小","大/小-上半场","大/小-下半场","平局退款","平局退款-上半场","平局退款-下半场","单/双",
+      // "两队均有进球","两队均有进球-上半场","两队均有进球-下半场","第1粒进球"
+      // ,"半场/全场","让球胜平负","让球胜平负-上半场","让球胜平负-下半场","最多进球半场"]
+
+    //  let arrName2 = ["让分","独赢-上半场","独赢-下半场"]
+      let arrName3 = ["让分","总分大小","胜负","让分-上半场","总分大小-上半场","大/小"]
+      let json=[]
+       arrOdds.forEach(element => {
+           
+            if(arrName3.indexOf(element.nm)>=0){
+                var m6={
+                  saishi: matchName,
+                  zhuName: zhu_name,
+                  keName: ke_name,
+                  type: element.nm,
+                  zhuRangValue: element.mks[0].op[0].nm,
+                  keRangValue: element.mks[0].op[1].nm,
+                  zhu: element.mks[0].op[0].od,
+                  ke: element.mks[0].op[1].od,
+                  matchTime: matchTime.toString(),
+                  bocai: '2'
+                }
+                json.push(m6)
+               // this.$api.oddsApi.insert_mq(m6)
+            }
+            
         });
         this.$api.oddsApi.insert_mq({listObj:JSON.stringify(json)})
     },
@@ -103,9 +145,21 @@ export default {
           console.info(res)
         });
     },
+     getBaseBallById(matchId) {
+      this.$api.oddsApi
+        .m6({ languageType: "CMN", matchId: matchId }).then((res) => {
+          this.handleBaseBallMatch(res.data)
+          console.info(res)
+        });
+    },
     handleList(matchData) {
       matchData.forEach((element) => {
         this.getById(element.id);
+      });
+    },
+    handleBaseBallList(matchData) {
+      matchData.forEach((element) => {
+        this.getBaseBallById(element.id);
       });
     },
     getList() {
@@ -157,6 +211,50 @@ export default {
       },2000*60*60);
        
      
+    },
+    getBaseBallList() {
+        this.requireBaseBallData(4,1);
+       setTimeout(()=>{
+         this.requireBaseBallData(4,2)
+       },2000)
+       setTimeout(()=>{
+         this.requireBaseBallData(4,3)
+       },4000)
+       setTimeout(()=>{
+         this.requireBaseBallData(4,4);
+       },4000 * 2)
+       setTimeout(()=>{
+         this.requireBaseBallData(4,5);
+       },4000 * 3)
+       setTimeout(()=>{
+         this.requireBaseBallData(4,6);
+       },4000 * 4 )
+       setTimeout(()=>{
+         this.requirerequireBaseBallDataData(4,7);
+       },4000 * 5)
+       setTimeout(()=>{
+         this.requireBaseBallData(4,8);
+       },4000 * 6)
+       setTimeout(()=>{
+         this.requireBaseBallData(4,9);
+       },4000 * 7)
+       setTimeout(()=>{
+         this.requireBaseBallData(4,10);
+       },4000 * 8)
+    },
+    requireBaseBallData(type,current){
+      this.$api.oddsApi.m6List({
+          current: current,
+          isPC: true,
+          languageType: "CMN",
+          orderBy: 0,
+          sportId: 3,
+          type: type,
+        })
+        .then((res) => {
+          // console.info(res.data.records);
+          this.handleBaseBallList(res.data.records)
+        });
     },
     requireData(type,current){
       this.$api.oddsApi.m6List({
