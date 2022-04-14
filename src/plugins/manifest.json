@@ -42,14 +42,7 @@
 			"js": ["js/chunk-vendors.js","js/mile.js"],
 			"run_at": "document_idle"
 		},
-		{
-			"matches": [
-				"http://live.win007.com/index2in1.aspx?id=24"
-			],
-			"css": ["css/btw.css","css/chunk-vendors.css"],
-			"js": ["js/chunk-vendors.js","js/btw.js"],
-			"run_at": "document_idle"
-		},
+		
 		{
 			"matches": [
 				"https://whuhhrm22.asclepius.whxh.com.cn/"

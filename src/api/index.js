@@ -6,3 +6,4 @@ files.keys().forEach(key=>{
     commonApiObj[newKey+"Api"] = require(`./modules/${newKey}`).default;
 })
 export default commonApiObj
+                                                                        

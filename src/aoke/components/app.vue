@@ -121,7 +121,7 @@ export default {
     },
     // 搜索方法
     searchFunc() {
-      this.$api.testApi.test().then((res) => {
+      this.$api.    pi.test().then((res) => {
         this.dataList = res.result;
         console.log(this.dataList);
       });

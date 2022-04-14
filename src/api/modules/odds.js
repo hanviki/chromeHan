@@ -4,12 +4,12 @@ import request3 from "@/utils/http3.js"
 
 class Odds{
   insert(params){
-    return request.post('lotterBMatch',params).then((data)=>{
+    return request.post('lotterBMsix/updateScore',params).then((data)=>{
       console.info(data)
-    });
+    })
   }
   getOddsByKeName(params){
-    return request2.get('lotterBMatch',params);
+    return request3.post('v1/match/matchResultList/',params);
   }
   insert_mq(params){
     return request.post('lotterBMsix',params).then((data)=>{
@@ -33,6 +33,12 @@ class Odds{
   m6List(params){
     return request3.post('v1/match/getList/',params)
   }
+  // insert_score(params){
+  //   return request.post('lotterBMsix/updateScore',params).then((data)=>{
+  //     console.info(data)
+  //   })
+  // }
+  
 }
 
 const odds = new Odds()

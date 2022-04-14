@@ -34,7 +34,7 @@ const plugins = [
 // 页面文件
 const pages = {};
 // 配置 popup.html 页面
-const chromeName = ["popup","index","mile","btw","aoke","money"];
+const chromeName = ["popup","index","mile","aoke","money"];
 
 chromeName.forEach(name => {
   	pages[name] = {
