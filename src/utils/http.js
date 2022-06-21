@@ -2,7 +2,7 @@ import axios from "axios"
 import { setSync, getSync } from "./chrome"
 
 let myAxios = axios.create({
-  baseURL: 'http://127.0.0.1:1077/',
+  baseURL: 'http://127.0.0.1:2021/',
   //baseURL: 'http://localhost:1088/',
   responseType: 'json',
   validateStatus(status) {

@@ -45,23 +45,27 @@ export default {
 
       let arrName2 = ["独赢", "独赢-上半场", "独赢-下半场"];
       let arrName3 = [
+        "让球",
         "两队均有进球",
         "两队均有进球-上半场",
         "两队均有进球-下半场",
         "最多进球半场",
         "第1粒进球",
         "大/小",
+        "大/小-上半场",
+        "角球:大/小",
+        "角球:大/小-上半场"
       ];
       let arrName4 = [
         zhu_name + " 进球-大/小",
         zhu_name + " 进球-大/小-上半场",
         zhu_name + " 进球-大/小-下半场",
       ];
-      let arrName5 = [
-        ke_name + " 进球-大/小",
-        ke_name + " 进球-大/小-上半场",
-        ke_name + " 进球-大/小-下半场",
-      ];
+      // let arrName5 = [
+      //   ke_name + " 进球-大/小",
+      //   ke_name + " 进球-大/小-上半场",
+      //   ke_name + " 进球-大/小-下半场",
+      // ];
       let json = [];
       arrOdds.forEach((element) => {
         if (arrName2.indexOf(element.nm) >= 0) {
@@ -81,53 +85,59 @@ export default {
         }
 
         if (arrName3.indexOf(element.nm) >= 0) {
+          for(var i=0;i<element.mks.length;i++){
           var m6 = {
             saishi: matchName,
             zhuName: zhu_name,
             keName: ke_name,
             type: element.nm,
-            zhuRangValue: element.mks[0].op[0].nm,
-            keRangValue: element.mks[0].op[1].nm,
-            zhu: element.mks[0].op[0].od,
-            ke: element.mks[0].op[1].od,
+            zhuRangValue: element.mks[i].op[0].nm,
+            keRangValue: element.mks[i].op[1].nm,
+            zhu: element.mks[i].op[0].od,
+            ke: element.mks[i].op[1].od,
+            avg: i,
             matchTime: matchTime.toString(),
             bocai: "1",
           };
           json.push(m6);
+          }
           // this.$api.oddsApi.insert_mq(m6)
         }
         if (arrName4.indexOf(element.nm) >= 0) {
+           for(var i=0;i<element.mks.length;i++){
           var m6 = {
             saishi: matchName,
             zhuName: zhu_name,
             keName: ke_name,
             type: element.nm.replace(zhu_name, "").trim(),
             zhuRangValue: zhu_name,
-            keRangValue: element.mks[0].op[1].nm,
-            zhu: element.mks[0].op[0].od,
-            ke: element.mks[0].op[1].od,
+            keRangValue: element.mks[i].op[1].nm,
+            zhu: element.mks[i].op[0].od,
+            ke: element.mks[i].op[1].od,
+            avg: i,
             matchTime: matchTime.toString(),
             bocai: "1",
           };
           json.push(m6);
+           }
           // this.$api.oddsApi.insert_mq(m6)
         }
-        if (arrName5.indexOf(element.nm) >= 0) {
-          var m6 = {
-            saishi: matchName,
-            zhuName: zhu_name,
-            keName: ke_name,
-            type: element.nm.replace(ke_name, "").trim(),
-            zhuRangValue: ke_name,
-            keRangValue: element.mks[0].op[1].nm,
-            zhu: element.mks[0].op[0].od,
-            ke: element.mks[0].op[1].od,
-            matchTime: matchTime.toString(),
-            bocai: "1",
-          };
-          json.push(m6);
-          // this.$api.oddsApi.insert_mq(m6)
-        }
+        // if (arrName5.indexOf(element.nm) >= 0) {
+        //   var m6 = {
+        //     saishi: matchName,
+        //     zhuName: zhu_name,
+        //     keName: ke_name,
+        //     type: element.nm.replace(ke_name, "").trim(),
+        //     zhuRangValue: ke_name,
+        //     keRangValue: element.mks[0].op[1].nm,
+        //     zhu: element.mks[0].op[0].od,
+        //     ke: element.mks[0].op[1].od,
+        //     matchTime: matchTime.toString(),
+        //     bocai: "1",
+        //   };
+        //   json.push(m6);
+        //   // this.$api.oddsApi.insert_mq(m6)
+        // }
       });
       this.$api.oddsApi.insert_mq({ listObj: JSON.stringify(json) });
     },
@@ -201,51 +211,51 @@ export default {
     },
     getList() {
       this.requireData(4, 1);
-      setTimeout(() => {
-        this.requireData(4, 2);
-      }, 2000);
-      setTimeout(() => {
-        this.requireData(4, 3);
-      }, 4000);
-      setTimeout(() => {
-        this.requireData(4, 4);
-      }, 4000 * 2);
-      setTimeout(() => {
-        this.requireData(4, 5);
-      }, 4000 * 3);
-      setTimeout(() => {
-        this.requireData(4, 6);
-      }, 4000 * 4);
-      setTimeout(() => {
-        this.requireData(4, 7);
-      }, 4000 * 5);
-      setTimeout(() => {
-        this.requireData(4, 8);
-      }, 4000 * 6);
-      setTimeout(() => {
-        this.requireData(4, 9);
-      }, 4000 * 7);
-      setTimeout(() => {
-        this.requireData(4, 10);
-      }, 4000 * 8);
+      // setTimeout(() => {
+      //   this.requireData(4, 2);
+      // }, 200000);
+      // setTimeout(() => {
+      //   this.requireData(4, 3);
+      // }, 4000);
+      // setTimeout(() => {
+      //   this.requireData(4, 4);
+      // }, 4000 * 2);
+      // setTimeout(() => {
+      //   this.requireData(4, 5);
+      // }, 4000 * 3);
+      // setTimeout(() => {
+      //   this.requireData(4, 6);
+      // }, 4000 * 4);
+      // setTimeout(() => {
+      //   this.requireData(4, 7);
+      // }, 4000 * 5);
+      // setTimeout(() => {
+      //   this.requireData(4, 8);
+      // }, 4000 * 6);
+      // setTimeout(() => {
+      //   this.requireData(4, 9);
+      // }, 4000 * 7);
+      // setTimeout(() => {
+      //   this.requireData(4, 10);
+      // }, 4000 * 8);
     },
     getTodayList() {
       this.requireData(3, 1);
       setTimeout(() => {
         this.requireData(3, 2);
       }, 10000);
-      setTimeout(() => {
-        this.requireData(3, 3);
-      }, 20000);
+      // setTimeout(() => {
+      //   this.requireData(3, 3);
+      // }, 20000);
       setInterval(() => {
         this.requireData(3, 1);
-        // setTimeout(()=>{
-        //   this.requireData(3,2)
-        // },10000);
+        setTimeout(()=>{
+          this.requireData(3,2)
+        },10000);
         //  setTimeout(()=>{
         //   this.requireData(3,3)
         // },20000);
-      }, 10000 * 60);
+      }, 10000 * 30);
     },
     getTodayList2() {
       this.requireData(3, 1);
@@ -316,6 +326,9 @@ export default {
           current: current,
           isPC: true,
           languageType: "CMN",
+          leagueIds: [11140, 10661, 10308, 16025, 10392, 10706, 10712, 10785, 10847, 11616, 10628, 10640, 10407, 10489, 10320, 10403, 16819, 16818, 16820,
+           10815, 10840, 11006, 11018,11030,10807,11460,11015,10983,10528,10744,10584,11016,  11861,10519, 12273, 16797, 16799, 16800, 16798,
+           11024,12273,11091,11064,11062,10583,10604,16797, 16798, 16799, 16800, 10519, 16684, 10740, 11085, 10552, 10691],
           orderBy: 0,
           sportId: 1,
           type: type,
