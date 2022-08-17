@@ -16,11 +16,11 @@ class Odds{
       console.info(data)
     });
   }
-  getOddsByKeName_jinqiu(params){
-    return request2.get('lotterBJinqiu',params);
+  ob(params){ //获取OB的数据，然后插入到lotterOB种
+    return request2.post('yewu11/v1/w/structureMatchBaseInfoByMidsPB',params);
   }
-  insert_rangqiu(params){
-    return request.post('lotterBRangqiu',params).then((data)=>{
+  insert_ob(params){
+    return request.post('lotterBMsix/ob',params).then((data)=>{
       console.info(data)
     });
   }

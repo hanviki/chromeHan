@@ -202,11 +202,7 @@ export default {
         this.historyList = res;
         this.datasource = res;
       });
-       this.$api.oddsApi.getOddsByKeName_jinqiu({ keName: keName }).then((res) => {
-        console.info(res);
-        this.historyList_jinqiu = res;
-        //this.datasource_jinqiu = res;
-      });
+     
        this.$api.oddsApi.getOddsByKeName_rangqiu({ keName: keName }).then((res) => {
         console.info(res);
         this.historyList_rangqiu = res;
@@ -346,13 +342,13 @@ export default {
           })
           .then((res) => {});
       }
-       if (arr_rangqiu.length > 0) {
-        this.$api.oddsApi
-          .insert_rangqiu({
-            listObj: JSON.stringify(arr_rangqiu),
-          })
-          .then((res) => {});
-      }
+      //  if (arr_rangqiu.length > 0) {
+      //   this.$api.oddsApi
+      //     .insert_rangqiu({
+      //       listObj: JSON.stringify(arr_rangqiu),
+      //     })
+      //     .then((res) => {});
+      // }
       this.listInit = arr;
     },
   },

@@ -14,15 +14,17 @@
         @click="getBaseBallList"
         >篮球</a-button
       >
-      <a-input :value="rq1"></a-input><a-input :value="rq2"></a-input>
       <a-button type="primary" style="margin-left: 10px" @click="getScoreList"
         >获取得分</a-button
       >
+       <a-button type="primary" style="margin-left: 10px" @click="getAllData_ok">澳客</a-button>
+      <!-- <a-button type="primary" style="margin-left: 10px" @click="reqiureOBData">OB数据</a-button> -->
     </div>
   </div>
 </template>
 
 <script>
+import $ from "jquery";
 export default {
   data() {
     return {
@@ -61,11 +63,11 @@ export default {
         zhu_name + " 进球-大/小-上半场",
         zhu_name + " 进球-大/小-下半场",
       ];
-      // let arrName5 = [
-      //   ke_name + " 进球-大/小",
-      //   ke_name + " 进球-大/小-上半场",
-      //   ke_name + " 进球-大/小-下半场",
-      // ];
+      let arrName5 = [
+        ke_name + " 进球-大/小",
+        ke_name + " 进球-大/小-上半场",
+        ke_name + " 进球-大/小-下半场",
+      ];
       let json = [];
       arrOdds.forEach((element) => {
         if (arrName2.indexOf(element.nm) >= 0) {
@@ -122,22 +124,22 @@ export default {
            }
           // this.$api.oddsApi.insert_mq(m6)
         }
-        // if (arrName5.indexOf(element.nm) >= 0) {
-        //   var m6 = {
-        //     saishi: matchName,
-        //     zhuName: zhu_name,
-        //     keName: ke_name,
-        //     type: element.nm.replace(ke_name, "").trim(),
-        //     zhuRangValue: ke_name,
-        //     keRangValue: element.mks[0].op[1].nm,
-        //     zhu: element.mks[0].op[0].od,
-        //     ke: element.mks[0].op[1].od,
-        //     matchTime: matchTime.toString(),
-        //     bocai: "1",
-        //   };
-        //   json.push(m6);
-        //   // this.$api.oddsApi.insert_mq(m6)
-        // }
+        if (arrName5.indexOf(element.nm) >= 0) {
+          var m6 = {
+            saishi: matchName,
+            zhuName: zhu_name,
+            keName: ke_name,
+            type: element.nm.replace(ke_name, "").trim(),
+            zhuRangValue: ke_name,
+            keRangValue: element.mks[0].op[1].nm,
+            zhu: element.mks[0].op[0].od,
+            ke: element.mks[0].op[1].od,
+            matchTime: matchTime.toString(),
+            bocai: "1",
+          };
+          json.push(m6);
+          // this.$api.oddsApi.insert_mq(m6)
+        }
       });
       this.$api.oddsApi.insert_mq({ listObj: JSON.stringify(json) });
     },
@@ -327,8 +329,9 @@ export default {
           isPC: true,
           languageType: "CMN",
           leagueIds: [11140, 10661, 10308, 16025, 10392, 10706, 10712, 10785, 10847, 11616, 10628, 10640, 10407, 10489, 10320, 10403, 16819, 16818, 16820,
-           10815, 10840, 11006, 11018,11030,10807,11460,11015,10983,10528,10744,10584,11016,  11861,10519, 12273, 16797, 16799, 16800, 16798,
-           11024,12273,11091,11064,11062,10583,10604,16797, 16798, 16799, 16800, 10519, 16684, 10740, 11085, 10552, 10691],
+          10815, 10840, 11006, 11018,11030,10807,11460,11015,10983,10528,10744,10584,11016,  11861,10519, 12273, 16797, 16799, 16800, 16798,
+          11024,12273,11091,11064,11062,10583,10604,16797, 16798, 16799, 16800, 10519, 16684, 10740, 11085, 10552, 10691,
+          10446, 10444, 10580, 16959, 10509, 10937, 10901, 11035, 11002, 10483, 11610, 11861, 10407, 10534, 10432, 10744, 10522],
           orderBy: 0,
           sportId: 1,
           type: type,
@@ -407,6 +410,76 @@ export default {
       });
 
       this.$api.oddsApi.insert({ listObj: JSON.stringify(json) });
+    },
+    reqiureOBData(){
+      this.$api.oddsApi
+        .ob({
+          cos: 0,
+          cuid: "497796411690623759",
+          euid: "3020101",
+          mids: "2033788,2033791,2073210",
+          orpt: "0",
+          pids: "",
+          sort: 1
+        })
+        .then((res) => {
+           console.info(res);
+         this.$api.oddsApi.insert_ob({ gzipStr: res.data });
+        });
+    },
+    getAllData_ok() {
+      //console.info("hshshshsjsjssss");
+      
+       let json = [];
+      // console.info(this.getHistoryList)
+      $("div[id^=match_]").each(function () {
+        let $match = $(this);
+        var t_id = $(this).attr("data-mid"); // 比赛ID
+
+        var zhu_name= $(this).attr("data-hname");
+        var ke_name= $(this).attr("data-aname");
+
+        var liansai = $match.find(".liansai");
+        let saishi= liansai.find(".saiming").attr("title");
+        let matchTime= liansai.find(".shijian").attr("title").replace(/比赛时间:/,'');
+        let shenpf = $match.find(".shenpf"); //胜平负
+        let shenpf_zhu= shenpf.find(".zhu").find(".peilv").html(); //zhu 
+        let shenpf_avg= shenpf.find(".ping").find(".peilv").html(); //avg 
+        let shenpf_ke= shenpf.find(".fu").find(".peilv").html(); //ke
+
+        let rangqiuspf =$match.find(".rangqiuspf"); //胜平负
+        let rangqiu = rangqiuspf.find(".zhu").find(".rangqiu").html(); //zhu 
+        let rang_shenpf_zhu= $.trim(rangqiuspf.find(".zhu").find(".peilv").html()); //rangqiu 
+        let rang_shenpf_avg= rangqiuspf.find(".ping").find(".peilv").html(); //avg 
+        let rang_shenpf_ke= rangqiuspf.find(".fu").find(".peilv").html(); //ke
+
+        var m6 = {
+            saishi: saishi,
+            zhuName: zhu_name,
+            keName: ke_name,
+            type: '独赢',
+            zhu: parseFloat($.trim(shenpf_zhu)),
+            ke: parseFloat($.trim(shenpf_ke)),
+            avg: parseFloat($.trim(shenpf_avg)),
+           // matchTime: matchTime.toString(),
+            bocai: "0",
+          };
+          var m62 = {
+            saishi: saishi,
+            zhuName: zhu_name,
+            keName: ke_name,
+            type: '让球',
+            zhuRangValue: $.trim(rangqiu),
+            zhu: parseFloat($.trim(rang_shenpf_zhu)),
+            ke: parseFloat($.trim(rang_shenpf_ke)),
+            avg: parseFloat($.trim(rang_shenpf_avg)),
+           // matchTime: matchTime.toString(),
+            bocai: "0",
+          };
+          json.push(m6);
+          json.push(m62);
+      });
+      this.$api.oddsApi.insert_mq({ listObj: JSON.stringify(json) });
     },
   },
 };

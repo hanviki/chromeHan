@@ -1,8 +1,14 @@
 import axios from "axios"
 import { setSync, getSync } from "./chrome"
 
+
+const baseURL= 'https://sportapi.fast1sports0.com/'
+const auth = '0gvc0IGCaizs1cwyFCAup9hYwqaWoMwF'
+
 let myAxios = axios.create({
-  baseURL: 'https://sportapi.fast1sports66.com/',
+  //baseURL: 'https://sportapi.fast1sports66.com/',
+  baseURL: baseURL,
+
   //baseURL: 'http://localhost:1088/',
   responseType: 'json',
   validateStatus(status) {
@@ -55,7 +61,7 @@ const request = {
       // }],
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'ub7ljIoE1Mj3CyIqxMzZKzNwsQn1T96g'
+        'Authorization': auth
       }
     })
   },
