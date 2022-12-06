@@ -3,7 +3,7 @@
     <div class="content_page_main">
       <a-button type="primary" @click="getList">早盘</a-button>
       <a-button type="primary" style="margin-left: 10px" @click="getTodayList"
-        >当天5分钟</a-button
+        >比赛开始前后5分钟</a-button
       >
       <a-button type="primary" style="margin-left: 10px" @click="getTodayList2"
         >当天30分钟</a-button
@@ -18,7 +18,7 @@
         >获取得分</a-button
       >
        <a-button type="primary" style="margin-left: 10px" @click="getAllData_ok">澳客</a-button>
-      <!-- <a-button type="primary" style="margin-left: 10px" @click="reqiureOBData">OB数据</a-button> -->
+       <a-button type="primary" style="margin-left: 10px" @click="getDcAllData_ok">99数据</a-button> 
     </div>
   </div>
 </template>
@@ -33,13 +33,15 @@ export default {
     };
   },
   methods: {
+    
     handleMatch(data) {
       let matchName = data.lg.na; //赛事名称
       let zhu_name = data.ts[0].na; //主队名称
       let ke_name = data.ts[1].na; //客队名称
       let arrOdds = data.mg;
       let matchTime = data.bt;
-
+      let matchId =data.id;
+  
       //"进球-大/小","单/双","进球-大/小-上半场","进球-大/小-下半场","进球-大/小","进球-大/小-上半场","进球-大/小-下半场"
       // const arrName =["让球","让球-上半场","大/小","大/小-上半场","大/小-下半场","平局退款","平局退款-上半场","平局退款-下半场","单/双",
       // "两队均有进球","两队均有进球-上半场","两队均有进球-下半场","第1粒进球"
@@ -81,6 +83,8 @@ export default {
             avg: element.mks[0].op[1].od,
             matchTime: matchTime.toString(),
             bocai: "1",
+            pingRangValue: matchId,
+            matchId: matchId
           };
           json.push(m6);
           //this.$api.oddsApi.insert_mq(m6)
@@ -100,6 +104,8 @@ export default {
             avg: i,
             matchTime: matchTime.toString(),
             bocai: "1",
+            pingRangValue: matchId,
+            matchId: matchId
           };
           json.push(m6);
           }
@@ -119,6 +125,8 @@ export default {
             avg: i,
             matchTime: matchTime.toString(),
             bocai: "1",
+            pingRangValue: matchId,
+            matchId: matchId
           };
           json.push(m6);
            }
@@ -136,6 +144,8 @@ export default {
             ke: element.mks[0].op[1].od,
             matchTime: matchTime.toString(),
             bocai: "1",
+            pingRangValue: matchId,
+            matchId: matchId
           };
           json.push(m6);
           // this.$api.oddsApi.insert_mq(m6)
@@ -202,9 +212,14 @@ export default {
         });
     },
     handleList(matchData) {
-      matchData.forEach((element) => {
-        this.getById(element.id);
-      });
+      // matchData.forEach((element) => {
+      //   this.getById(element.id);
+      // });
+      for(let k=0;k<matchData.length;k++){
+        setTimeout(()=>{
+          this.getById(matchData[k].id);
+        },500*k)
+      }
     },
     handleBaseBallList(matchData) {
       matchData.forEach((element) => {
@@ -241,32 +256,17 @@ export default {
       //   this.requireData(4, 10);
       // }, 4000 * 8);
     },
-    getTodayList() {
-      this.requireData(3, 1);
-      setTimeout(() => {
-        this.requireData(3, 2);
-      }, 10000);
-      // setTimeout(() => {
-      //   this.requireData(3, 3);
-      // }, 20000);
-      setInterval(() => {
-        this.requireData(3, 1);
-        setTimeout(()=>{
-          this.requireData(3,2)
-        },10000);
-        //  setTimeout(()=>{
-        //   this.requireData(3,3)
-        // },20000);
-      }, 10000 * 30);
+    getTodayList() { //计算比赛开始5分钟和比赛前5分钟的赔率
+      this.$api.oddsApi.insertFive()
     },
     getTodayList2() {
       this.requireData(3, 1);
-      setTimeout(() => {
-        this.requireData(3, 2);
-      }, 10000);
-      setTimeout(() => {
-        this.requireData(3, 3);
-      }, 20000);
+      // setTimeout(() => {
+      //   this.requireData(3, 2);
+      // }, 10000);
+      // setTimeout(() => {
+      //   this.requireData(3, 3);
+      // }, 20000);
       setInterval(() => {
         this.requireData(3, 1);
         // setTimeout(()=>{
@@ -328,10 +328,11 @@ export default {
           current: current,
           isPC: true,
           languageType: "CMN",
-          leagueIds: [11140, 10661, 10308, 16025, 10392, 10706, 10712, 10785, 10847, 11616, 10628, 10640, 10407, 10489, 10320, 10403, 16819, 16818, 16820,
-          10815, 10840, 11006, 11018,11030,10807,11460,11015,10983,10528,10744,10584,11016,  11861,10519, 12273, 16797, 16799, 16800, 16798,
-          11024,12273,11091,11064,11062,10583,10604,16797, 16798, 16799, 16800, 10519, 16684, 10740, 11085, 10552, 10691,
-          10446, 10444, 10580, 16959, 10509, 10937, 10901, 11035, 11002, 10483, 11610, 11861, 10407, 10534, 10432, 10744, 10522],
+          leagueIds: [11140, 10661, 10308, 16025, 10392, 10706, 10712, 10785, 10847, 11616, 10628, 10640, 10489, 10320, 10403, 16819, 16818, 16820,
+          10815, 10840, 11006, 11018,11030,10807,11460,11015,10983,10528,10744,10584,11016, 12273, 16797, 16799, 16800, 16798,
+          11024,11091,11064,11062,10583,10604,  10519, 16684, 10740, 11085, 10552, 10691,
+          10446, 10444, 10580, 16959, 10509, 10937, 10901, 11035, 11002, 10483, 11610, 11861, 10407, 10534, 10432, 10522
+          ,11128, 10746, 10596, 11162, 10495, 10864, 11031, 11188, 11121, 10698],
           orderBy: 0,
           sportId: 1,
           type: type,
@@ -427,60 +428,177 @@ export default {
          this.$api.oddsApi.insert_ob({ gzipStr: res.data });
         });
     },
-    getAllData_ok() {
+    //获取单场的赔率
+    getAllData_ok() { //存入ob 表中
+      //console.info("hshshshsjsjssss");
+       let json = [];
+       let saishi_arr= [];
+      // console.info(this.getHistoryList)
+      $("tr[id^=match_detail]").each(function () {
+        let $match = $(this);
+        var t_id = $(this).attr("matchid"); // 比赛ID
+        var is_start= $(this).attr("state"); //是否开赛
+
+       // if(t_id!=undefined && t_id!='' && t_id!=null && is_start=='Not'){
+        if(t_id!=undefined && t_id!='' && t_id!=null ){
+          
+          let saishi=  $match.attr("type");
+        //  let url= $match.find(".ls").find("a").attr("href");
+
+         // let monthDay= $.trim($match.find("td").eq(2).html()).substring(0,5);
+        //  if(monthDay>='08-30'){
+       
+          let matchTime=(new Date()).getFullYear()+"-" + $.trim($match.find("td").eq(2).html())+":00";
+         // console.info($match.find(".dzname:first").find("a").html());
+          let zhuName= $.trim($match.find(".dzname:first").find("a").html());
+          let keName= $.trim($match.find(".dzname:last").find("a").html());
+          let bifenFull= $.trim($match.find(".show_score").find("b").eq(0).html())
+          +":"+ $.trim($match.find(".show_score").find("b").eq(2).html())
+          ;
+          let bifenHalf =$.trim($match.find("td").eq(7).find(".font_red").html())
+          let zhu =$.trim($match.find("td").eq(9).find("span").eq(0).html());
+          let avg =$.trim($match.find("td").eq(9).find("span").eq(1).html());
+          let ke =$.trim($match.find("td").eq(9).find("span").eq(2).html());
+
+          let rangValue= $.trim($match.find(".dzname:first").find(".ctrl_rq").html());
+       
+          let m6= {
+            saishi: saishi,
+            matchId: t_id,
+            zhuName: zhuName,
+            keName: keName,
+            matchTime: matchTime,
+            bifenHalf,
+            bifenFull,
+            zhu,
+            avg,
+            ke,
+            rangValue,
+            bocai: '1',
+            type: '独赢'
+          }
+          
+            json.push(m6);
+         // }
+         }
+        
+       
+      });
+     // console.info(json)
+      this.$api.oddsApi.insert_mq({ listObj: JSON.stringify(json),bocai: '1' });
+    },
+     //获取单场的赔率
+    getJingCaiData_ok() {
+      //console.info("hshshshsjsjssss");
+       let json = [];
+       let saishi_arr= [];
+      // console.info(this.getHistoryList)
+      $("tr[id^=match_detail]").each(function () {
+        let $match = $(this);
+        var t_id = $(this).attr("matchid"); // 比赛ID
+       // var is_start= $(this).attr("state"); //是否开赛
+
+        if(t_id!=undefined && t_id!='' && t_id!=null ){
+       //  if(t_id!=undefined && t_id!='' && t_id!=null ){
+          
+          let saishi=  $match.attr("type");
+        //  let url= $match.find(".ls").find("a").attr("href");
+
+         // let monthDay= $.trim($match.find("td").eq(2).html()).substring(0,5);
+        //  if(monthDay>='08-30'){
+       
+          let matchTime=(new Date()).getFullYear()+"-" + $.trim($match.find("td").eq(2).html())+":00";
+         // console.info($match.find(".dzname:first").find("a").html());
+          let zhuName= $.trim($match.find(".dzname:first").find("a").html());
+          let keName= $.trim($match.find(".dzname:last").find("a").html());
+          let bifenFull= $.trim($match.find(".show_score").find("b").eq(0).html())
+          +":"+ $.trim($match.find(".show_score").find("b").eq(2).html())
+          ;
+          let bifenHalf =$.trim($match.find("td").eq(7).find(".font_red").html())
+
+          if($match.find("td").eq(9).find("span")){
+
+          let zhu =$.trim($match.find("td").eq(9).find("span").eq(0).html());
+          let avg =$.trim($match.find("td").eq(9).find("span").eq(1).html());
+          let ke =$.trim($match.find("td").eq(9).find("span").eq(2).html());
+          
+
+          let rangValue= $.trim($match.find(".dzname:first").find(".ctrl_rq").html());
+       
+          let m6= {
+            saishi: saishi,
+            matchId: t_id,
+            zhuName: zhuName,
+            keName: keName,
+            matchTime: matchTime,
+            bifenHalf,
+            bifenFull,
+            zhu,
+            avg,
+            ke,
+            rangValue,
+            bocai: '1',
+            type: '独赢'
+          }
+          
+            json.push(m6);
+         // }
+         }
+        }
+        
+       
+      });
+     // console.info(json)
+      this.$api.oddsApi.insert_mq({ listObj: JSON.stringify(json),bocai: '1' });
+    },
+//获取99家
+     getDcAllData_ok() {
       //console.info("hshshshsjsjssss");
       
        let json = [];
+       let saishi_arr= [];
       // console.info(this.getHistoryList)
-      $("div[id^=match_]").each(function () {
+      $("tr[id^=match_detail]").each(function () {
         let $match = $(this);
-        var t_id = $(this).attr("data-mid"); // 比赛ID
+        var t_id = $(this).attr("matchid"); // 比赛ID
+        var is_start= $(this).attr("state"); //是否开赛 Not ,End
 
-        var zhu_name= $(this).attr("data-hname");
-        var ke_name= $(this).attr("data-aname");
+        if(t_id!=undefined && t_id!='' && t_id!=null && is_start=='Not'){
+       //  if(t_id!=undefined && t_id!='' && t_id!=null ){
+          
+          let saishi=  $match.attr("type");
+        //  let url= $match.find(".ls").find("a").attr("href");
 
-        var liansai = $match.find(".liansai");
-        let saishi= liansai.find(".saiming").attr("title");
-        let matchTime= liansai.find(".shijian").attr("title").replace(/比赛时间:/,'');
-        let shenpf = $match.find(".shenpf"); //胜平负
-        let shenpf_zhu= shenpf.find(".zhu").find(".peilv").html(); //zhu 
-        let shenpf_avg= shenpf.find(".ping").find(".peilv").html(); //avg 
-        let shenpf_ke= shenpf.find(".fu").find(".peilv").html(); //ke
+         // let monthDay= $.trim($match.find("td").eq(2).html()).substring(0,5);
+        //  if(monthDay>='08-30'){
+       
+          let matchTime=(new Date()).getFullYear()+"-" + $.trim($match.find("td").eq(2).html())+":00";
+          console.info($match.find(".dzname:first").find("a").html());
+          let zhuName= $.trim($match.find(".dzname:first").find("a").html());
+          let keName= $.trim($match.find(".dzname:last").find("a").html());
+          //let zhu =$.trim($match.find(".ctrl_self_betopt").find("span")[0].html());
+          //let avg =$.trim($match.find(".ctrl_self_betopt").find("span")[0].html());
+          //let zhu =$.trim($match.find(".ctrl_self_betopt").find("span")[0].html());
 
-        let rangqiuspf =$match.find(".rangqiuspf"); //胜平负
-        let rangqiu = rangqiuspf.find(".zhu").find(".rangqiu").html(); //zhu 
-        let rang_shenpf_zhu= $.trim(rangqiuspf.find(".zhu").find(".peilv").html()); //rangqiu 
-        let rang_shenpf_avg= rangqiuspf.find(".ping").find(".peilv").html(); //avg 
-        let rang_shenpf_ke= rangqiuspf.find(".fu").find(".peilv").html(); //ke
-
-        var m6 = {
+          // let oddUrl= $.trim($match.find(".linebgdata").find("a")[0].attr("href"));
+       
+          let m6= {
             saishi: saishi,
-            zhuName: zhu_name,
-            keName: ke_name,
-            type: '独赢',
-            zhu: parseFloat($.trim(shenpf_zhu)),
-            ke: parseFloat($.trim(shenpf_ke)),
-            avg: parseFloat($.trim(shenpf_avg)),
-           // matchTime: matchTime.toString(),
-            bocai: "0",
-          };
-          var m62 = {
-            saishi: saishi,
-            zhuName: zhu_name,
-            keName: ke_name,
-            type: '让球',
-            zhuRangValue: $.trim(rangqiu),
-            zhu: parseFloat($.trim(rang_shenpf_zhu)),
-            ke: parseFloat($.trim(rang_shenpf_ke)),
-            avg: parseFloat($.trim(rang_shenpf_avg)),
-           // matchTime: matchTime.toString(),
-            bocai: "0",
-          };
-          json.push(m6);
-          json.push(m62);
+            matchId: t_id,
+            zhuName: zhuName,
+            keName: keName,
+            matchTime: matchTime
+          }
+          
+            json.push(m6);
+         // }
+         }
+        
+       
       });
-      this.$api.oddsApi.insert_mq({ listObj: JSON.stringify(json) });
-    },
+      //console.info(saishi_arr)
+      this.$api.oddsApi.insert_mq({ listObj: JSON.stringify(json),bocai: '0' });
+    }
   },
 };
 </script>

@@ -2,8 +2,9 @@ import axios from "axios"
 import { setSync, getSync } from "./chrome"
 
 
-const baseURL= 'https://sportapi.fast1sports0.com/'
-const auth = '0gvc0IGCaizs1cwyFCAup9hYwqaWoMwF'
+//const baseURL= 'https://sapi.fastbs55.com/';
+const baseURL= 'https://sportapi.fastball2.com/'
+const auth = 'to_JCLO9DV1qhu0V5JBvZAsnSkR0SvfZ4sg'
 
 let myAxios = axios.create({
   //baseURL: 'https://sportapi.fast1sports66.com/',
@@ -48,6 +49,7 @@ myAxios.interceptors.response.use(
 
 const request = {
   baseURL: 'https://whuhhrmapi.asclepius.whxh.com.cn/',
+  token: auth,
   post(url, params) {
     return myAxios.post(url, params, {
       // transformRequest: [(params) => {

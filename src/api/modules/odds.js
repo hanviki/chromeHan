@@ -16,8 +16,10 @@ class Odds{
       console.info(data)
     });
   }
-  ob(params){ //获取OB的数据，然后插入到lotterOB种
-    return request2.post('yewu11/v1/w/structureMatchBaseInfoByMidsPB',params);
+  insertFive(){
+    return request.post('lotterBMsix/allMatchToday',{token: request3.token}).then((data)=>{
+      console.info(data)
+    });
   }
   insert_ob(params){
     return request.post('lotterBMsix/ob',params).then((data)=>{
@@ -33,11 +35,6 @@ class Odds{
   m6List(params){
     return request3.post('v1/match/getList/',params)
   }
-  // insert_score(params){
-  //   return request.post('lotterBMsix/updateScore',params).then((data)=>{
-  //     console.info(data)
-  //   })
-  // }
   
 }
 
